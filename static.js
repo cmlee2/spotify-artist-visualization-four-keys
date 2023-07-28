@@ -24,6 +24,7 @@ function init() {
         plotRadarChart(data)
         plotTempoHistogram(data)
         plotBubbleChart(data)
+        plotPopularityPieChart(data)
     })
 console.log(url)
 }
@@ -328,3 +329,31 @@ function plotGaugeChart(jsonData){
 //     console.log(data)
 //     plotGaugeChart(data);
 // });
+
+function plotPopularityPieChart(jsonData) {
+    jsonData.sort((a, b) => b.popularity - a.popularity);
+    jsonData = jsonData.slice(0,30);
+    var artistSongCount = {};
+    $.each(jsonData, function(key, value) {
+        var artst = value.artist;
+        if (artistSongCount[artst]) {
+            artistSongCount[artst]++;
+        }
+        else {
+            artistSongCount[artst] = 1;
+        }
+    });
+    console.log(artistSongCount);
+    var trace = {
+        type: 'pie',
+        labels: Object.keys(artistSongCount),
+        values: Object.values(artistSongCount)
+    };
+    var display = {
+        title: 'Artists Info',
+        height: 600,
+        width: 700,
+        font: {size:8}
+    }
+    Plotly.newPlot('pie', [trace], display);
+}

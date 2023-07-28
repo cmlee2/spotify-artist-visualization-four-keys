@@ -52,41 +52,41 @@ console.log(url)
 //     init();
 // });
 
-function plotDurationBarGraph(jsonData) {
-    // Extract the second array from the JSON data
-    var Array = jsonData;
+// function plotDurationBarGraph(jsonData) {
+//     // Extract the second array from the JSON data
+//     var Array = jsonData;
 
-    // Extract the duration values from the second array
-    var durationData = Array.map(function(song) {
-        return song.duration/60;
-    });
+//     // Extract the duration values from the second array
+//     var durationData = Array.map(function(song) {
+//         return song.duration/60;
+//     });
 
-    // Extract the song names from the second array
-    var songNames = Array.map(function(song) {
-        return song.song;
-    });
+//     // Extract the song names from the second array
+//     var songNames = Array.map(function(song) {
+//         return song.song;
+//     });
 
-    // Create the trace for the bar graph
-    var trace = {
-        x: songNames,
-        y: durationData,
-        type: 'bar'
-    };
+//     // Create the trace for the bar graph
+//     var trace = {
+//         x: songNames,
+//         y: durationData,
+//         type: 'bar'
+//     };
 
-    // Create the layout for the bar graph
-    var layout = {
-        title: 'Duration of Recommended Songs Based on ' + artistInput.value,
-        xaxis: {
-            title: 'Song'
-        },
-        yaxis: {
-            title: 'Duration (Minutes)'
-        }
-    };
+//     // Create the layout for the bar graph
+//     var layout = {
+//         title: 'Duration of Recommended Songs Based on ' + artistInput.value,
+//         xaxis: {
+//             title: 'Song'
+//         },
+//         yaxis: {
+//             title: 'Duration (Minutes)'
+//         }
+//     };
 
-    // Combine the trace and layout and plot the graph
-    Plotly.newPlot('bar', [trace], layout);
-};
+//     // Combine the trace and layout and plot the graph
+//     Plotly.newPlot('bar', [trace], layout);
+// };
 // need to make a plot of the artist only to show case difference between artist and recommendations
 // also make it into ascending order
 
@@ -329,3 +329,31 @@ function plotGaugeChart(jsonData){
 //     console.log(data)
 //     plotGaugeChart(data);
 // });
+
+function plotDurationBarGraph(jsonData) {
+    var durationData = jsonData.map(function(song) {
+        return song.duration;
+    });
+    var songNames = jsonData.map(function(song) {
+        return song.song;
+    });
+    // Create the trace for the bar graph
+    var trace = {
+        x: songNames,
+        y: durationData,
+        type: 'bar'
+    };
+    // Create the layout for the bar graph
+    var layout = {
+        title: 'Duration of Songs by ' + artistInput.value,
+        xaxis: {
+            title: 'Song'
+        },
+        yaxis: {
+            title: 'Duration (seconds)'
+        },
+        font: {size:8}
+    };
+    // Combine the trace and layout and plot the graph
+    Plotly.newPlot('bar', [trace], layout);
+}
