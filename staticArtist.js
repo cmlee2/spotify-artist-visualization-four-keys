@@ -1,18 +1,5 @@
-// artist = "Paramore" // "Tyler the Creator"
-// // popularity = 90
-// // url = `http://127.0.0.1:5501/api/v1.0/${artist}/${popularity}`
-
-// artistUrl=`http://192.168.0.29:5501/api/v1.0/${artist}`
-
-// d3.json(artistUrl).then(function(data){
-//     console.log(data)
-// })
-
 let submitButton = document.querySelector("#myButton");
 let artistInput = document.querySelector("#artistInput");
-//let artist = artistInput.value;
-// let popInput = document.querySelector("#popInput");
-//let popularity = popInput.value;
 let message = document.querySelector("#message");
 
 function myFunction() {
@@ -27,74 +14,12 @@ function init() {
         plotPopularityBarGraph(data)
         plotDurationBarGraph(data)
         plotGaugeChart(data)
-        plotRadarChart(data)
         plotTempoHistogram(data)
         plotBubbleChart(data)
     })
 console.log(url)
 }
 
-
-// function init() {
-//     url = `http://127.0.0.1:5501/api/v1.0/${artist}/${popularity}`
-//     d3.json(url).then(function(data){
-//         console.log(data[0])
-//     })
-// console.log(url)
-// }
-
-
-
-// $(document).ready(function() {
-//     var musicList = "<ul><li>Song1</li><li>Song another</li></ul>";
-
-    // $("#music").append(musicList);
-//     init();
-// });
-
-// function plotDurationBarGraph(jsonData) {
-//     // Extract the second array from the JSON data
-//     var Array = jsonData;
-
-//     // Extract the duration values from the second array
-//     var durationData = Array.map(function(song) {
-//         return song.duration/60;
-//     });
-
-//     // Extract the song names from the second array
-//     var songNames = Array.map(function(song) {
-//         return song.song;
-//     });
-
-//     // Create the trace for the bar graph
-//     var trace = {
-//         x: songNames,
-//         y: durationData,
-//         type: 'bar'
-//     };
-
-//     // Create the layout for the bar graph
-//     var layout = {
-//         title: 'Duration of Recommended Songs Based on ' + artistInput.value,
-//         xaxis: {
-//             title: 'Song'
-//         },
-//         yaxis: {
-//             title: 'Duration (Minutes)'
-//         }
-//     };
-
-//     // Combine the trace and layout and plot the graph
-//     Plotly.newPlot('bar', [trace], layout);
-// };
-// need to make a plot of the artist only to show case difference between artist and recommendations
-// also make it into ascending order
-
-// // Fetch data from the API and plot the graph
-// d3.json(artistUrl).then(function(data) {
-//     console.log(data); // This will log the fetched JSON data
-//     plotDurationBarGraph(data); // Plot the bar graph using the fetched data
-// });
 
 function plotPopularityBarGraph(jsonData) {
     // Extract the first array from the JSON data
@@ -119,7 +44,7 @@ function plotPopularityBarGraph(jsonData) {
 
     // Create the layout for the bar graph
     var layout = {
-        title: `Popularity of Song Recommendations based on ` + artistInput.value,
+        title: `Popularity of Songs for ` + artistInput.value,
         xaxis: {
             title: 'Song'
         },
@@ -134,11 +59,6 @@ function plotPopularityBarGraph(jsonData) {
 // make a specific bar for recommendations and for artist and then combine them
 // use different colors for both
 
-// // Fetch data from the API and plot the graph
-// d3.json(artistUrl).then(function(data) {
-//     console.log(data); // This will log the fetched JSON data
-//     plotPopularityBarGraph(data); // Plot the bar graph using the fetched data
-// });
 
 function plotTempoHistogram(jsonData) {
     // Extract the tempo values from the first array
@@ -171,7 +91,7 @@ function plotTempoHistogram(jsonData) {
         mode:'markers',
         type: 'scatter',
         name: 'Artist & Songs',
-        text: Artist
+        text: Song
     };
 
     // var trace2 = {
@@ -182,7 +102,7 @@ function plotTempoHistogram(jsonData) {
 
     // Create the layout for the histogram
     var layout = {
-        title: 'Correlaton of Popularity and Danceability of Song Recs based on '+ artistInput.value,
+        title: 'Correlaton of Popularity and Danceability of Songs for '+ artistInput.value,
         xaxis: {
             title: 'Dancibility '
         },
@@ -196,11 +116,6 @@ function plotTempoHistogram(jsonData) {
 }
 // need to add popout for information on the html for each of the scatterplots
 
-// // Fetch data from the API and plot the histogram
-// d3.json(artistUrl).then(function(data) {
-//     console.log(data); // This will log the fetched JSON data
-//     plotTempoHistogram(data); // Plot the histogram using the fetched data
-// });
 
 function plotBubbleChart(jsonData) {
     var Array = jsonData;
@@ -213,14 +128,19 @@ function plotBubbleChart(jsonData) {
     var ArrayTempo = Array.map(function(song){
         return song.tempo
     })
-    var Artist = Array.map(function(song){
-        return song.artist
+    // var Artist = Array.map(function(song){
+    //     return song.artist
+    // })
+
+    var Song = Array.map(function(song){
+        return song.song
     })
+
     // var size = ArrayPopularity
     var TraceB ={    
         x: ArrayTempo,
         y: ArrayEnergy,
-        text: Artist,
+        text: Song,
         mode: 'markers',
         marker: {
             size:ArrayPopularity,
@@ -232,7 +152,7 @@ function plotBubbleChart(jsonData) {
     };
 
     var layout = {
-        title: "Energy & Tempo Measured by Popularity",
+        title: "Energy & Tempo Measured by Popularity for " + artistInput.value,
         showlegend: false,
         height: 600,
         width: 600
@@ -250,35 +170,6 @@ d3.json(artistUrl).then(function(data){
 });
 
 
-function plotRadarChart(jsonData){
-    var Array = jsonData
-    var ArrayPopularity = Array.map(function(song) {
-        return song.popularity
-    });
-
-    data = {
-        type: "scatterpolar",
-        r: ArrayPopularity,
-        theta: ['Most Popular','Popular','Ok', 'Fine', 'Its There', 'Most Popular'],
-        fill: 'toself'
-    }
-
-    layout = {
-        polar: {
-            radialaxis: {
-                visible: true,
-                range:[0, 100]
-            }
-        },
-        showlegend:false
-    }
-    Plotly.newPlot('radar-chart', [data], layout)
-}
-
-d3.json(artistUrl).then(function(data){
-    console.log(data)
-    plotRadarChart(data);
-});
 
 
 function plotGaugeChart(jsonData){
@@ -319,16 +210,9 @@ function plotGaugeChart(jsonData){
     }
     Plotly.newPlot("gauge", [trace]);
 }
-// d3.json(artistUrl).then(function(data){
-//     console.log(data)
-//     plotGaugeChart(data);
-// });
 
 // // can be used for recommendations too. needs to be added to html for its own plot and its own function
-// d3.json(url).then(function(data){
-//     console.log(data)
-//     plotGaugeChart(data);
-// });
+
 
 function plotDurationBarGraph(jsonData) {
     var durationData = jsonData.map(function(song) {

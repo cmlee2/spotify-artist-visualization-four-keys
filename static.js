@@ -1,7 +1,3 @@
-// artist = "Paramore" // "Tyler the Creator"
-// popularity = 90
-// url = `http://127.0.0.1:5501/api/v1.0/${artist}/${popularity}`
-
 let submitButton = document.querySelector("#myButton");
 let artistInput = document.querySelector("#artistInput");
 //let artist = artistInput.value;
@@ -18,10 +14,8 @@ function init() {
     url = `http://127.0.0.1:5501/api/v1.0/${artistInput.value}/${popInput.value}`
     d3.json(url).then(function(data){
         console.log(data)
-        plotPopularityBarGraph(data)
         plotDurationBarGraph(data)
         plotGaugeChart(data)
-        plotRadarChart(data)
         plotTempoHistogram(data)
         plotBubbleChart(data)
         plotPopularityPieChart(data)
@@ -29,28 +23,12 @@ function init() {
 console.log(url)
 }
 
-// artistUrl=`http://192.168.0.29:5501/api/v1.0/${artist}`
 
 d3.json(url).then(function(data){
     console.log(data)
 })
 
-// function init() {
-//     url = `http://127.0.0.1:5501/api/v1.0/${artist}/${popularity}`
-//     d3.json(url).then(function(data){
-//         console.log(data[0])
-//     })
-// console.log(url)
-// }
 
-
-
-// $(document).ready(function() {
-//     var musicList = "<ul><li>Song1</li><li>Song another</li></ul>";
-
-//     $("#music").append(musicList);
-//     init();
-// });
 
 function plotDurationBarGraph(jsonData) {
     // Extract the second array from the JSON data
@@ -58,7 +36,7 @@ function plotDurationBarGraph(jsonData) {
 
     // Extract the duration values from the second array
     var durationData = Array.map(function(song) {
-        return song.duration/60;
+        return song.duration;
     });
 
     // Extract the song names from the second array
@@ -90,55 +68,11 @@ function plotDurationBarGraph(jsonData) {
 // need to make a plot of the artist only to show case difference between artist and recommendations
 // also make it into ascending order
 
-// // Fetch data from the API and plot the graph
-// d3.json(url).then(function(data) {
-//     console.log(data); // This will log the fetched JSON data
-//     plotDurationBarGraph(data); // Plot the bar graph using the fetched data
-// });
 
-function plotPopularityBarGraph(jsonData) {
-    // Extract the first array from the JSON data
-    var Array = jsonData;
-
-    // Extract the popularity values from the first array
-    var popularityData = Array.map(function(song) {
-        return song.popularity;
-    });
-
-    // Extract the song names from the first array
-    var songNames = Array.map(function(song) {
-        return song.song;
-    });
-
-    // Create the trace for the bar graph
-    var trace = {
-        x: songNames,
-        y: popularityData,
-        type: 'bar'
-    };
-
-    // Create the layout for the bar graph
-    var layout = {
-        title: `Popularity of Song Recommendations based on ` + artistInput.value,
-        xaxis: {
-            title: 'Song'
-        },
-        yaxis: {
-            title: 'Popularity'
-        }
-    };
-
-    // Combine the trace and layout and plot the graph
-    Plotly.newPlot('popularity-chart', [trace], layout);
-}
 // make a specific bar for recommendations and for artist and then combine them
 // use different colors for both
 
-// // Fetch data from the API and plot the graph
-// d3.json(url).then(function(data) {
-//     console.log(data); // This will log the fetched JSON data
-//     plotPopularityBarGraph(data); // Plot the bar graph using the fetched data
-// });
+
 
 function plotTempoHistogram(jsonData, jsonArtist) {
     // Extract the tempo values from the first array
@@ -196,11 +130,6 @@ function plotTempoHistogram(jsonData, jsonArtist) {
 }
 // need to add popout for information on the html for each of the scatterplots
 
-// // Fetch data from the API and plot the histogram
-// d3.json(url).then(function(data) {
-//     console.log(data); // This will log the fetched JSON data
-//     plotTempoHistogram(data); // Plot the histogram using the fetched data
-// });
 
 function plotBubbleChart(jsonData) {
     var Array = jsonData;
@@ -220,7 +149,7 @@ function plotBubbleChart(jsonData) {
     var TraceB ={    
         x: ArrayTempo,
         y: ArrayEnergy,
-        text: artistInput.value,
+        text: Artist,
         mode: 'markers',
         marker: {
             size:ArrayPopularity,
@@ -232,7 +161,7 @@ function plotBubbleChart(jsonData) {
     };
 
     var layout = {
-        title: "Energy & Tempo Measured by Popularity",
+        title: "Energy & Tempo Measured by Popularity for Recs Based on " + artistInput.value,
         showlegend: false,
         height: 600,
         width: 600
@@ -243,42 +172,6 @@ function plotBubbleChart(jsonData) {
 };
 // change this for correlation for better understanding of energy and tempo.
 
-// create function to initialize all of the plots at the same time with no repeats
-
-// d3.json(url).then(function(data){
-//     plotBubbleChart(data);
-// });
-
-
-function plotRadarChart(jsonData){
-    var Array = jsonData
-    var ArrayPopularity = Array.map(function(song) {
-        return song.popularity
-    });
-
-    data = {
-        type: "scatterpolar",
-        r: ArrayPopularity,
-        theta: ['Most Popular','Popular','Ok', 'Fine', 'Its There', 'Most Popular'],
-        fill: 'toself'
-    }
-
-    layout = {
-        polar: {
-            radialaxis: {
-                visible: true,
-                range:[0, 100]
-            }
-        },
-        showlegend:false
-    }
-    Plotly.newPlot('radar-chart', [data], layout)
-}
-
-// d3.json(url).then(function(data){
-//     console.log(data)
-//     plotRadarChart(data);
-// });
 
 
 function plotGaugeChart(jsonData){
@@ -319,16 +212,6 @@ function plotGaugeChart(jsonData){
     }
     Plotly.newPlot("gauge", [trace]);
 }
-// d3.json(url).then(function(data){
-//     console.log(data)
-//     plotGaugeChart(data);
-// });
-
-// // can be used for recommendations too. needs to be added to html for its own plot and its own function
-// d3.json(url).then(function(data){
-//     console.log(data)
-//     plotGaugeChart(data);
-// });
 
 function plotPopularityPieChart(jsonData) {
     jsonData.sort((a, b) => b.popularity - a.popularity);
@@ -350,7 +233,7 @@ function plotPopularityPieChart(jsonData) {
         values: Object.values(artistSongCount)
     };
     var display = {
-        title: 'Artists Info',
+        title: 'Percent of Artist Recommendations based on ' + artistInput.value,
         height: 600,
         width: 700,
         font: {size:8}
