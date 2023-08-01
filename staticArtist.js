@@ -137,7 +137,7 @@ function plotBubbleChart(jsonData) {
     };
 
     var layout = {
-        title: "Energy & Tempo Measured by Popularity for " + artistInput.value,
+        title: "Correlation of Energy & Tempo Measured by Popularity for " + artistInput.value,
         xaxis: {
             title: 'Tempo '
         },
