@@ -58,7 +58,7 @@ function plotDurationBarGraph(jsonData) {
             title: 'Song'
         },
         yaxis: {
-            title: 'Duration (Minutes)'
+            title: 'Duration (Seconds)'
         }
     };
 
@@ -126,7 +126,7 @@ function plotTempoHistogram(jsonData, jsonArtist) {
     var layout = {
         title: 'Correlaton of Popularity and Danceability of Song Recs based on '+ artistInput.value,
         xaxis: {
-            title: 'Dancibility '
+            title: 'Danceability '
         },
         yaxis: {
             title: 'Popularity'
@@ -156,6 +156,8 @@ function plotGaugeChart(jsonData){
         title: {text: "Average Energy for Recommendations based on " + artistInput.value, font: {size:28}},
         type: "indicator",
         mode: "gauge+number",
+         height: 600,
+        width: 700,
         gauge: {
             axis: {range: [null, 100]},
             bar: {color: "Greens(68,166,198)"},
