@@ -15,10 +15,10 @@ function init() {
     d3.json(url).then(function(data){
         console.log(data)
         plotDurationBarGraph(data)
+        plotPopularityPieChart(data)
         plotGaugeChart(data)
         plotTempoHistogram(data)
-        plotBubbleChart(data)
-        plotPopularityPieChart(data)
+        
     })
 console.log(url)
 }
@@ -68,11 +68,33 @@ function plotDurationBarGraph(jsonData) {
 // need to make a plot of the artist only to show case difference between artist and recommendations
 // also make it into ascending order
 
-
-// make a specific bar for recommendations and for artist and then combine them
-// use different colors for both
-
-
+function plotPopularityPieChart(jsonData) {
+    jsonData.sort((a, b) => b.popularity - a.popularity);
+    jsonData = jsonData.slice(0,30);
+    var artistSongCount = {};
+    $.each(jsonData, function(key, value) {
+        var artst = value.artist;
+        if (artistSongCount[artst]) {
+            artistSongCount[artst]++;
+        }
+        else {
+            artistSongCount[artst] = 1;
+        }
+    });
+    console.log(artistSongCount);
+    var trace = {
+        type: 'pie',
+        labels: Object.keys(artistSongCount),
+        values: Object.values(artistSongCount)
+    };
+    var display = {
+        title: 'Percent of Artist Recommendations based on ' + artistInput.value,
+        height: 600,
+        width: 700,
+        font: {size:8}
+    }
+    Plotly.newPlot('pie', [trace], display);
+}
 
 function plotTempoHistogram(jsonData, jsonArtist) {
     // Extract the tempo values from the first array
@@ -91,13 +113,6 @@ function plotTempoHistogram(jsonData, jsonArtist) {
         return song.song
     })
 
-    
-    // Extract the tempo values from the second array
-    // var secondArray = jsonData[1];
-    // var secondArrayTempo = secondArray.map(function(song) {
-    //     return song.tempo;
-    // });
-
     // Create the traces for the histogram
     var trace1 = {
         x: ArrayDanceability,
@@ -107,13 +122,6 @@ function plotTempoHistogram(jsonData, jsonArtist) {
         name: 'Artist & Songs',
         text: Artist
     };
-
-    // var trace2 = {
-    //     x: secondArrayTempo,
-    //     type: 'histogram',
-    //     name: 'Second Array'
-    // };
-
     // Create the layout for the histogram
     var layout = {
         title: 'Correlaton of Popularity and Danceability of Song Recs based on '+ artistInput.value,
@@ -129,50 +137,6 @@ function plotTempoHistogram(jsonData, jsonArtist) {
     Plotly.newPlot('tempo-histogram', [trace1], layout);
 }
 // need to add popout for information on the html for each of the scatterplots
-
-
-function plotBubbleChart(jsonData) {
-    var Array = jsonData;
-    var ArrayPopularity = Array.map(function(song) {
-        return song.popularity
-    });
-    var ArrayEnergy = Array.map(function(song){
-        return song.energy
-    })
-    var ArrayTempo = Array.map(function(song){
-        return song.tempo
-    })
-    var Artist = Array.map(function(song){
-        return song.artist
-    })
-    // var size = ArrayPopularity
-    var TraceB ={    
-        x: ArrayTempo,
-        y: ArrayEnergy,
-        text: Artist,
-        mode: 'markers',
-        marker: {
-            size:ArrayPopularity,
-            color:ArrayTempo,
-            colorscale:'delta'
-            // sizeref:1
-        }
-    
-    };
-
-    var layout = {
-        title: "Energy & Tempo Measured by Popularity for Recs Based on " + artistInput.value,
-        showlegend: false,
-        height: 600,
-        width: 600
-    }
-
-    Plotly.newPlot('bubble-chart', [TraceB], layout)
-
-};
-// change this for correlation for better understanding of energy and tempo.
-
-
 
 function plotGaugeChart(jsonData){
     var Array = jsonData;
@@ -211,32 +175,4 @@ function plotGaugeChart(jsonData){
         }
     }
     Plotly.newPlot("gauge", [trace]);
-}
-
-function plotPopularityPieChart(jsonData) {
-    jsonData.sort((a, b) => b.popularity - a.popularity);
-    jsonData = jsonData.slice(0,30);
-    var artistSongCount = {};
-    $.each(jsonData, function(key, value) {
-        var artst = value.artist;
-        if (artistSongCount[artst]) {
-            artistSongCount[artst]++;
-        }
-        else {
-            artistSongCount[artst] = 1;
-        }
-    });
-    console.log(artistSongCount);
-    var trace = {
-        type: 'pie',
-        labels: Object.keys(artistSongCount),
-        values: Object.values(artistSongCount)
-    };
-    var display = {
-        title: 'Percent of Artist Recommendations based on ' + artistInput.value,
-        height: 600,
-        width: 700,
-        font: {size:8}
-    }
-    Plotly.newPlot('pie', [trace], display);
 }

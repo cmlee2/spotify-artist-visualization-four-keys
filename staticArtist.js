@@ -50,14 +50,14 @@ function plotPopularityBarGraph(jsonData) {
         },
         yaxis: {
             title: 'Popularity'
-        }
+        },
+        height: 600,
+        width: 600
     };
 
     // Combine the trace and layout and plot the graph
     Plotly.newPlot('popularity-chart', [trace], layout);
 }
-// make a specific bar for recommendations and for artist and then combine them
-// use different colors for both
 
 
 function plotTempoHistogram(jsonData) {
@@ -76,14 +76,6 @@ function plotTempoHistogram(jsonData) {
     var Song = Array.map(function(song){
         return song.song
     })
-
-    
-    // Extract the tempo values from the second array
-    // var secondArray = jsonData[1];
-    // var secondArrayTempo = secondArray.map(function(song) {
-    //     return song.tempo;
-    // });
-
     // Create the traces for the histogram
     var trace1 = {
         x: ArrayDanceability,
@@ -94,12 +86,6 @@ function plotTempoHistogram(jsonData) {
         text: Song
     };
 
-    // var trace2 = {
-    //     x: secondArrayTempo,
-    //     type: 'histogram',
-    //     name: 'Second Array'
-    // };
-
     // Create the layout for the histogram
     var layout = {
         title: 'Correlaton of Popularity and Danceability of Songs for '+ artistInput.value,
@@ -108,7 +94,9 @@ function plotTempoHistogram(jsonData) {
         },
         yaxis: {
             title: 'Popularity'
-        }
+        },
+        height: 600,
+        width: 600
     };
 
     // Combine the traces and layout and plot the graph
@@ -128,9 +116,6 @@ function plotBubbleChart(jsonData) {
     var ArrayTempo = Array.map(function(song){
         return song.tempo
     })
-    // var Artist = Array.map(function(song){
-    //     return song.artist
-    // })
 
     var Song = Array.map(function(song){
         return song.song
@@ -153,6 +138,12 @@ function plotBubbleChart(jsonData) {
 
     var layout = {
         title: "Energy & Tempo Measured by Popularity for " + artistInput.value,
+        xaxis: {
+            title: 'Tempo '
+        },
+        yaxis: {
+            title: 'Energy'
+        },
         showlegend: false,
         height: 600,
         width: 600
@@ -162,14 +153,6 @@ function plotBubbleChart(jsonData) {
 
 };
 // change this for correlation for better understanding of energy and tempo.
-
-// create function to initialize all of the plots at the same time with no repeats
-
-d3.json(artistUrl).then(function(data){
-    plotBubbleChart(data);
-});
-
-
 
 
 function plotGaugeChart(jsonData){
@@ -236,7 +219,9 @@ function plotDurationBarGraph(jsonData) {
         yaxis: {
             title: 'Duration (seconds)'
         },
-        font: {size:8}
+        font: {size:8},
+        height: 600,
+        width: 600
     };
     // Combine the trace and layout and plot the graph
     Plotly.newPlot('bar', [trace], layout);
