@@ -4,4 +4,4 @@ The purpose of this project was to build data visualizations using Spotify's API
 
 First, data would be pulled Spotify's API and using Python and read through a Flask API to gather the data for the visualization website.
 
-The website would take user input to build visualizations based on the artist chosen and popularity value chosen. For a chosen artist, the top 10 songs would be displayed along with the songs' accompanying audio features. The recommendation tab would take user input to build visualiztions based on the artist chosen and popularity value. These songs would then be compared based on their audio features including: danceability, tempo, energy, popularity, duration.
+The website would take user input to build visualizations based on the artist chosen and popularity value chosen. For a chosen artist, the top 10 songs would be displayed along with the songs' accompanying audio features. The recommendation tab would take user input to build visualiztions based on the artist chosen and popularity value. These songs would then be compared based on their audio features, including but not limited to: danceability, tempo, energy, popularity, duration.
